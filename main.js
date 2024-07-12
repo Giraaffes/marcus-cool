@@ -5,7 +5,7 @@ const server = express();
 
 
 server.post("/github-push", (req, res) => {
-	if (!req.headers["x-github-hook-id"] == config.githubWebhookId) return;
+	if (!req.headers["x-github-hook-id"] == "489728820") return;
 	res.status(200).end();
 
 	exec("git pull", (error, stdout, stderr) => {
