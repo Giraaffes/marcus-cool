@@ -4,7 +4,7 @@ const express = require("express");
 const server = express();
 
 
-server.post("/test/github-push", (req, res) => {
+server.post("/github-push", (req, res) => {
 	if (!req.headers["x-github-hook-id"] == config.githubWebhookId) return;
 	res.status(200).end();
 
@@ -15,7 +15,7 @@ server.post("/test/github-push", (req, res) => {
 });
 
 
-server.use("/test", express.static("files", {
+server.use(express.static("files", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),
 	extensions: ["html"],
 	fallthrough: false
