@@ -10,5 +10,21 @@
 	</head>
 	<body>
 		<iframe src="https://www.lectio.dk/lectio/36/login.aspx" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script>
+			// let observer = new MutationObserver(
+			// 	m => console.log(`${m[0].attributeName} changed to ${$("iframe").attr("src")}`)
+			// );
+			// observer.observe($("iframe")[0], {attributes: true});
+
+			// $("iframe")[0].onunload = () => {
+			// 	console.log("a");
+			// };
+
+			window.addEventListener("beforeunload", e => {
+				return e.returnValue = "Hello";
+			});
+		</script>
 	</body>
 </html>
