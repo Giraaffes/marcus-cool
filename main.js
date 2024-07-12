@@ -4,10 +4,16 @@ const express = require("express");
 const server = express();
 
 
-server.use((req, res, next) => {
-	res.set("access-control-allow-origin", "*");
-	next();
+server.post("/test/github-push", (req, res) => {
+	if (!req.headers["x-github-hook-id"] == config.githubWebhookId) return;
+	res.status(200).end();
+
+	exec("git pull", (error, stdout, stderr) => {
+		console.log(stdout);
+		process.exit();
+	});
 });
+
 
 server.use("/test", express.static("files", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),
