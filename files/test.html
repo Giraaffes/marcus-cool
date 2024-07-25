@@ -3,17 +3,32 @@
 <html>
 	<head>
 		<style>
-			html, body, iframe { width: 100%; height: 100%; }
-			body { background: gray; margin: 0; }
-			iframe { box-sizing: border-box; position: absolute; padding: 0.75rem; border: none; }
+			html, body { width: 100%; height: 100%; }
+			body { 
+				background: gray; margin: 0;
+				display: flex; justify-content: center;
+			}
+
+			#container {
+				position: absolute;
+				width: 23cm; height: 100%;
+				overflow: hidden;
+			}
+			iframe { 
+				position: absolute; box-sizing: border-box; border: none;
+				width: 100%; height: 100%;
+				/*left: calc(-543px + 1cm);*/
+			}
 		</style>
 	</head>
 	<body>
-		<iframe src="https://docs.google.com/document/d/e/2PACX-1vT9Y1U0VvwcXwfXXPrnLfLp6onBdaE1ZDEBvWfzKKU9SSbN4gjuF-yb_5nuzZLsZzM21d4i-JI3MdFd/pub?embedded=true"></iframe>
+		<div id="container">
+			<iframe src="https://docs.google.com/document/d/1ubF6TGBBe5aT4PZsKv1KlF2HW5yuOKWOxEPkMU6OHCo/edit?embedded=true&rm=demo"></iframe>
+		</div>
 
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 		<script>
-
+			$(document).on("wheel", console.log);
 		</script>
 	</body>
 </html>
