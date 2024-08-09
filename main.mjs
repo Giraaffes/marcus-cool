@@ -18,13 +18,11 @@ server.post("/github-push", (req, res) => {
 	});
 });
 
-
 server.use(express.static("files", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),
 	extensions: ["html"],
 	fallthrough: false
 }));
-
 
 server.use((err, req, res, next) => {
 	if (err.status == 404) {
@@ -35,20 +33,24 @@ server.use((err, req, res, next) => {
 	
 		res.status(500).send("<title>Fejl</title>Beklager, der opstod en fejl...").end();
 	}
-})
+});
+
+server.listen(80, () => {
+	console.log("ready");
+});
 
 
-const googleAuth = await (new gAuthLib.GoogleAuth({
-	keyFile: "./service-account.json",
-	scopes: ["https://www.googleapis.com/auth/drive"]
-})).getClient();
-console.log("logged in");
+// const googleAuth = await (new gAuthLib.GoogleAuth({
+// 	keyFile: "./service-account.json",
+// 	scopes: ["https://www.googleapis.com/auth/drive"]
+// })).getClient();
+// console.log("logged in");
 
-const docs = await gApis.docs({version: "v1", auth: googleAuth});
-console.log("docs initialized");
+// const docs = await gApis.docs({version: "v1", auth: googleAuth});
+// console.log("docs initialized");
 
-const drive = await gApis.drive({version: "v3", auth: googleAuth});
-console.log("drive initalized");
+// const drive = await gApis.drive({version: "v3", auth: googleAuth});
+// console.log("drive initalized");
 
 // console.log(await drive.permissions.create({
 // 	fileId: "1ubF6TGBBe5aT4PZsKv1KlF2HW5yuOKWOxEPkMU6OHCo", 
@@ -58,7 +60,7 @@ console.log("drive initalized");
 // console.log(await docsClient.documents.create({title: "test document"}));
 // console.log("document created");
 
-process.stdin.resume();
+//process.stdin.resume();
 
 // server.listen(7000, "127.0.0.1", async () => {
 // 	console.log("Ready");
