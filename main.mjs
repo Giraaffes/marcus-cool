@@ -35,10 +35,6 @@ server.use((err, req, res, next) => {
 	}
 });
 
-server.listen(80, () => {
-	console.log("ready");
-});
-
 
 // const googleAuth = await (new gAuthLib.GoogleAuth({
 // 	keyFile: "./service-account.json",
@@ -62,6 +58,6 @@ server.listen(80, () => {
 
 //process.stdin.resume();
 
-// server.listen(7000, "127.0.0.1", async () => {
-// 	console.log("Ready");
-// });
+server.listen(7000, "127.0.0.1", () => {
+	console.log("Ready");
+});
