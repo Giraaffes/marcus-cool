@@ -32,8 +32,10 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 });
 
 
-function equalNoCase(str1: string, str2: string): boolean {
-	return str1.toLowerCase() == str2.toLowerCase();
+function topBeginningMatches(values: string[], query: string): string[] {
+	return values.filter(
+		v => v.toLowerCase().startsWith(query.toLowerCase())
+	).sort();
 }
 
 function stringDifference(str1: string, str2: string): number {
@@ -44,10 +46,25 @@ function stringDifference(str1: string, str2: string): number {
 	return matches.length > 0 ? matches[0].errors : Infinity;
 }
 
-function getTopMatches(values: string[], query: string, maxErrors: number): {value: string, errors: number}[] {
-	return values.map(value => 
+function topApproxMatches(values: string[], query: string, maxErrors: number): string[] {
+	let matchEntries = values.map(value => 
 		({value, errors: stringDifference(value, query)})
-	).filter(m => m.errors <= maxErrors).sort((a, b) => a.errors - b.errors);
+	).filter(m => m.errors <= maxErrors).sort((a, b) => a.errors - b.errors)
+	return matchEntries.map(e => e.value);
+}
+
+type matchLevel = "perfect" | "beginning" | "approx" | "none";
+function topMatches(values: string[], query: string, maxErrors: number): {level: matchLevel, matches: string[]} {
+	let perfectMatch = values.find(v => v.toLowerCase() == query.toLowerCase());
+	if (perfectMatch) return {level: "perfect", matches: [perfectMatch]};
+
+	let beginningMatches = topBeginningMatches(values, query);
+	if (beginningMatches.length > 0) return {level: "beginning", matches: beginningMatches};
+
+	let approxMatches = topApproxMatches(values, query, maxErrors);
+	if (approxMatches) return {level: "approx", matches: approxMatches};
+
+	return {level: "none", matches: []};
 }
 
 type Fish = typeof fishData[number];
@@ -61,28 +78,32 @@ function formatFish(fish: Fish) {
 
 server.get("/stardew/suggestions", async (req, res) => {
 	let query = req.query.q as string;
-	let perfectMatch = fishData.find(e => equalNoCase(e.name, query));
-	if (perfectMatch) {
-		res.send([query, [formatFish(perfectMatch)], [], []])
+	let fishNames = fishData.map(e => e.name);
+	let matchResult = topMatches(fishNames, query, 3);
+
+	let suggestions;
+	if (matchResult.level == "perfect") {
+		let fish = fishData.find(e => e.name == matchResult.matches[0]);
+		suggestions = [formatFish(fish)];
 	} else {
-		let topMatches = getTopMatches(fishData.map(e => e.name), query, 3);
-		res.send([query, topMatches.map(m => m.value), [], []]);
+		suggestions = matchResult.matches.slice(0, 10);
 	}
+
+	res.send([query, suggestions, [], []]);
 });
 
 server.get("/stardew/search", async (req, res) => {
 	let query = req.query.q as string;
-	let perfectMatch = fishData.find(e => equalNoCase(e.name, query));
-	if (perfectMatch) {
-		res.redirect(perfectMatch.url);
+	query = query.replace(/\(.+\)/, "").trim();
+
+	let fishNames = fishData.map(e => e.name);
+	let matchResult = topMatches(fishNames, query, 3);
+
+	if (matchResult.level != "none") {
+		let fish = fishData.find(e => e.name == matchResult.matches[0]);
+		res.redirect(fish.url);
 	} else {
-		let bestNameMatch = getTopMatches(fishData.map(e => e.name), query, 3)[0];
-		if (bestNameMatch) {
-			let bestMatch = fishData.find(e => e.name == bestNameMatch.value);
-			res.redirect(bestMatch.url);
-		} else {
-			res.redirect(`https://stardewvalleywiki.com/mediawiki/index.php?search=${encodeURIComponent(query)}`);
-		}
+		res.redirect(`https://stardewvalleywiki.com/mediawiki/index.php?search=${encodeURIComponent(query)}`);
 	}
 });
 
