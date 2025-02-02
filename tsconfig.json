@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"strictBindCallApply": true,
-		"resolveJsonModule": true,
-		"module": "NodeNext"
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true
 	}
 }

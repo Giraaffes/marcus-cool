@@ -3,6 +3,6 @@
   <Image width="32" height="32">https://stardewvalleywiki.com/mediawiki/extensions/StardewValley/images/favicon.png</Image>
 
   <InputEncoding>UTF-8</InputEncoding>
-  <Url type="text/html" template="https://stardewvalleywiki.com/mediawiki/index.php?search={searchTerms}"/>
-  <Url type="application/x-suggestions+json" template="https://www.htgnyt.dk/test/stardew/search?q={searchTerms}"/>
+  <Url type="application/x-suggestions+json" template="https://www.htgnyt.dk/test/stardew/suggestions?q={searchTerms}"/>
+  <Url type="text/html" template="https://www.htgnyt.dk/test/stardew/search?q={searchTerms}"/>
 </OpenSearchDescription>
