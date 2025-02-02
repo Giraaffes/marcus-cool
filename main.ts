@@ -1,10 +1,12 @@
 import "express-async-errors";
-import * as express from "express";
+import express from "express";
 
 import axios from "axios";
 
-import * as cp from "child_process";
-import * as crypto from "crypto";
+import cp from "child_process";
+import crypto from "crypto";
+
+import fish from "./data/stardew_fish.json"
 
 
 const server = express();
@@ -28,36 +30,22 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	});
 });
 
-type OpenSearchSuggestions = [string, string[], string[], string[]]
-server.get("/stardew_search", async (req, res) => {
-	let query = req.query.q as string;
-	let suggestions = (await axios.get(
-		`https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&format=json&formatversion=2&search=${query}`
-	)).data as OpenSearchSuggestions;
-
-	let selfIndex = suggestions[1].findIndex(s => s.toLowerCase() == query.toLowerCase())
-	if (selfIndex != -1) {
-		suggestions[1][selfIndex] = suggestions[1][selfIndex] + " ";
-	}
-
-	// wait that's a stupid way of doing it
-	//let searchRes = (await axios.get(
-	//	`https://stardewvalleywiki.com/mediawiki/index.php?search=${query}`,
-	//	{maxRedirects: 0, validateStatus: () => true}
-	//));
-	//if (searchRes.status == 302) {
-	//	let	pageUrl = searchRes.headers["location"];
-	//	suggestions[0].unshift()
-	//}
-
-	res.send(suggestions);
-});
-
-server.use(express.static("files", {
+server.use(express.static("static", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),
 	extensions: ["html"],
 	fallthrough: false
 }));
+
+
+//type OpenSearchSuggestions = [string, string[], string[], string[]]
+server.get("/stardew/search", async (req, res) => {
+	let query = req.query.q as string;
+	let matchedFish = fish.filter(e => e.name.startsWith(query.toLowerCase()));
+	res.send([
+		query, matchedFish.map(e => e.name), [], []
+	]);
+});
+
 
 server.use(((err, req, res, next) => {
 	if (err.status == 404) {

@@ -1,0 +1,675 @@
+[
+	{
+		"name": "Pufferfish",
+		"url": "https://stardewvalleywiki.com/Pufferfish",
+		"locations": [
+			"ocean",
+			"ginger"
+		],
+		"times": [
+			"12–16"
+		],
+		"seasons": [
+			"summer",
+			"ginger island"
+		],
+		"weather": [
+			"sun"
+		]
+	},
+	{
+		"name": "Anchovy",
+		"url": "https://stardewvalleywiki.com/Anchovy",
+		"locations": [
+			"ocean"
+		],
+		"times": [],
+		"seasons": [
+			"spring",
+			"fall"
+		],
+		"weather": []
+	},
+	{
+		"name": "Tuna",
+		"url": "https://stardewvalleywiki.com/Tuna",
+		"locations": [
+			"ocean",
+			"ginger"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"summer",
+			"winter",
+			"ginger island"
+		],
+		"weather": []
+	},
+	{
+		"name": "Sardine",
+		"url": "https://stardewvalleywiki.com/Sardine",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"spring",
+			"fall",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Bream",
+		"url": "https://stardewvalleywiki.com/Bream",
+		"locations": [
+			"river (town+forest)"
+		],
+		"times": [
+			"18–2"
+		],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Largemouth Bass",
+		"url": "https://stardewvalleywiki.com/Largemouth_Bass",
+		"locations": [
+			"mtn. lake"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Smallmouth Bass",
+		"url": "https://stardewvalleywiki.com/Smallmouth_Bass",
+		"locations": [
+			"river (town)",
+			"forest pond"
+		],
+		"times": [],
+		"seasons": [
+			"spring",
+			"fall"
+		],
+		"weather": []
+	},
+	{
+		"name": "Rainbow Trout",
+		"url": "https://stardewvalleywiki.com/Rainbow_Trout",
+		"locations": [
+			"river (town+forest)",
+			"mtn. lake"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"summer"
+		],
+		"weather": [
+			"sun"
+		]
+	},
+	{
+		"name": "Salmon",
+		"url": "https://stardewvalleywiki.com/Salmon",
+		"locations": [
+			"river (town+forest)",
+			"forest waterfalls"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"fall"
+		],
+		"weather": []
+	},
+	{
+		"name": "Walleye",
+		"url": "https://stardewvalleywiki.com/Walleye",
+		"locations": [
+			"river (town+forest)",
+			"forest pond",
+			"mtn. lake"
+		],
+		"times": [
+			"12–2"
+		],
+		"seasons": [
+			"fall",
+			"winter"
+		],
+		"weather": [
+			"rain"
+		]
+	},
+	{
+		"name": "Perch",
+		"url": "https://stardewvalleywiki.com/Perch",
+		"locations": [
+			"river (town+forest)",
+			"forest pond",
+			"mtn. lake"
+		],
+		"times": [],
+		"seasons": [
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Carp",
+		"url": "https://stardewvalleywiki.com/Carp",
+		"locations": [
+			"mtn. lake",
+			"secret woods pond",
+			"sewers"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Catfish",
+		"url": "https://stardewvalleywiki.com/Catfish",
+		"locations": [
+			"river (town+forest)",
+			"secret woods pond",
+			"witch"
+		],
+		"times": [
+			"6–24"
+		],
+		"seasons": [
+			"spring",
+			"fall",
+			"winter"
+		],
+		"weather": [
+			"rain"
+		]
+	},
+	{
+		"name": "Pike",
+		"url": "https://stardewvalleywiki.com/Pike",
+		"locations": [
+			"river (town+forest)",
+			"forest pond"
+		],
+		"times": [],
+		"seasons": [
+			"summer",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Sunfish",
+		"url": "https://stardewvalleywiki.com/Sunfish",
+		"locations": [
+			"river (town+forest)"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"spring",
+			"summer"
+		],
+		"weather": [
+			"sun",
+			"wind"
+		]
+	},
+	{
+		"name": "Red Mullet",
+		"url": "https://stardewvalleywiki.com/Red_Mullet",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"summer",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Herring",
+		"url": "https://stardewvalleywiki.com/Herring",
+		"locations": [
+			"ocean"
+		],
+		"times": [],
+		"seasons": [
+			"spring",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Eel",
+		"url": "https://stardewvalleywiki.com/Eel",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"16–2"
+		],
+		"seasons": [
+			"spring",
+			"fall"
+		],
+		"weather": [
+			"rain"
+		]
+	},
+	{
+		"name": "Octopus",
+		"url": "https://stardewvalleywiki.com/Octopus",
+		"locations": [
+			"ocean",
+			"ginger"
+		],
+		"times": [
+			"6–13"
+		],
+		"seasons": [
+			"summer",
+			"ginger island"
+		],
+		"weather": []
+	},
+	{
+		"name": "Red Snapper",
+		"url": "https://stardewvalleywiki.com/Red_Snapper",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"summer",
+			"fall",
+			"winter"
+		],
+		"weather": [
+			"rain"
+		]
+	},
+	{
+		"name": "Squid",
+		"url": "https://stardewvalleywiki.com/Squid",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"18–2"
+		],
+		"seasons": [
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Sea Cucumber",
+		"url": "https://stardewvalleywiki.com/Sea_Cucumber",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"fall",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Super Cucumber",
+		"url": "https://stardewvalleywiki.com/Super_Cucumber",
+		"locations": [
+			"ocean",
+			"ginger"
+		],
+		"times": [
+			"18–2"
+		],
+		"seasons": [
+			"summer",
+			"fall",
+			"ginger island"
+		],
+		"weather": []
+	},
+	{
+		"name": "Ghostfish",
+		"url": "https://stardewvalleywiki.com/Ghostfish",
+		"locations": [
+			"mines"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Stonefish",
+		"url": "https://stardewvalleywiki.com/Stonefish",
+		"locations": [
+			"mines"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Ice Pip",
+		"url": "https://stardewvalleywiki.com/Ice_Pip",
+		"locations": [
+			"mines"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Lava Eel",
+		"url": "https://stardewvalleywiki.com/Lava_Eel",
+		"locations": [
+			"mines",
+			"volcano"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Sandfish",
+		"url": "https://stardewvalleywiki.com/Sandfish",
+		"locations": [
+			"desert"
+		],
+		"times": [
+			"6–20"
+		],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Scorpion Carp",
+		"url": "https://stardewvalleywiki.com/Scorpion_Carp",
+		"locations": [
+			"desert"
+		],
+		"times": [
+			"6–20"
+		],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Flounder",
+		"url": "https://stardewvalleywiki.com/Flounder",
+		"locations": [
+			"ocean",
+			"ginger"
+		],
+		"times": [
+			"6–20"
+		],
+		"seasons": [
+			"spring",
+			"summer",
+			"ginger island"
+		],
+		"weather": []
+	},
+	{
+		"name": "Midnight Carp",
+		"url": "https://stardewvalleywiki.com/Midnight_Carp",
+		"locations": [
+			"mtn. lake",
+			"cindersap forest pond",
+			"ginger island pond and river"
+		],
+		"times": [
+			"22–2"
+		],
+		"seasons": [
+			"fall",
+			"winter",
+			"ginger island"
+		],
+		"weather": []
+	},
+	{
+		"name": "Sturgeon",
+		"url": "https://stardewvalleywiki.com/Sturgeon",
+		"locations": [
+			"mtn. lake"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"summer",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Tiger Trout",
+		"url": "https://stardewvalleywiki.com/Tiger_Trout",
+		"locations": [
+			"river (town+forest)"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"fall",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Bullhead",
+		"url": "https://stardewvalleywiki.com/Bullhead",
+		"locations": [
+			"mtn. lake"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Tilapia",
+		"url": "https://stardewvalleywiki.com/Tilapia",
+		"locations": [
+			"ocean",
+			"ginger island rivers"
+		],
+		"times": [
+			"6–14"
+		],
+		"seasons": [
+			"summer",
+			"fall",
+			"ginger island"
+		],
+		"weather": []
+	},
+	{
+		"name": "Chub",
+		"url": "https://stardewvalleywiki.com/Chub",
+		"locations": [
+			"cindersap forest river",
+			"mtn. lake"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Dorado",
+		"url": "https://stardewvalleywiki.com/Dorado",
+		"locations": [
+			"cindersap forest river"
+		],
+		"times": [
+			"6–19"
+		],
+		"seasons": [
+			"summer"
+		],
+		"weather": []
+	},
+	{
+		"name": "Albacore",
+		"url": "https://stardewvalleywiki.com/Albacore",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"6–11",
+			"18–2"
+		],
+		"seasons": [
+			"fall",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Shad",
+		"url": "https://stardewvalleywiki.com/Shad",
+		"locations": [
+			"river (town+forest)"
+		],
+		"times": [
+			"9–2"
+		],
+		"seasons": [
+			"spring",
+			"summer",
+			"fall"
+		],
+		"weather": [
+			"rain"
+		]
+	},
+	{
+		"name": "Lingcod",
+		"url": "https://stardewvalleywiki.com/Lingcod",
+		"locations": [
+			"river (town+forest)",
+			"mtn. lake"
+		],
+		"times": [],
+		"seasons": [
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Halibut",
+		"url": "https://stardewvalleywiki.com/Halibut",
+		"locations": [
+			"ocean"
+		],
+		"times": [
+			"6–11",
+			"19–2"
+		],
+		"seasons": [
+			"spring",
+			"summer",
+			"winter"
+		],
+		"weather": []
+	},
+	{
+		"name": "Woodskip",
+		"url": "https://stardewvalleywiki.com/Woodskip",
+		"locations": [
+			"secret woods pond",
+			"forest farm"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Void Salmon",
+		"url": "https://stardewvalleywiki.com/Void_Salmon",
+		"locations": [
+			"witch"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Slimejack",
+		"url": "https://stardewvalleywiki.com/Slimejack",
+		"locations": [
+			"mutant bug lair"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Stingray",
+		"url": "https://stardewvalleywiki.com/Stingray",
+		"locations": [
+			"pirate cove"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Lionfish",
+		"url": "https://stardewvalleywiki.com/Lionfish",
+		"locations": [
+			"ginger"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Blue Discus",
+		"url": "https://stardewvalleywiki.com/Blue_Discus",
+		"locations": [
+			"ginger island pond and rivers"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	},
+	{
+		"name": "Goby",
+		"url": "https://stardewvalleywiki.com/Goby",
+		"locations": [
+			"forest waterfalls"
+		],
+		"times": [],
+		"seasons": [],
+		"weather": []
+	}
+]

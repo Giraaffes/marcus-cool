@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
 		"strictBindCallApply": true,
+		"resolveJsonModule": true,
+		"module": "NodeNext"
 	}
 }
