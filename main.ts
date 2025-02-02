@@ -37,7 +37,7 @@ server.get("/stardew_search", async (req, res) => {
 
 	let selfIndex = suggestions[1].findIndex(s => s.toLowerCase() == query.toLowerCase())
 	if (selfIndex != -1) {
-		suggestions[1][selfIndex] = suggestions[1][selfIndex] + " (page)";
+		suggestions[1][selfIndex] = suggestions[1][selfIndex] + " ";
 	}
 
 	// wait that's a stupid way of doing it
