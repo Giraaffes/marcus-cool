@@ -15,13 +15,13 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	if (!githubSignatureStr) throw Error(`Incorrectly formatted x-hub-signature-256 header: ${ghSignatureHeader}`);
 	
 	let githubSignature = Buffer.from(githubSignatureStr);
-	let signature1 = crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body).digest();
-	let signature2 = crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body.toString()).digest();
-	console.log(`${githubSignature}\n${signature1}\n${signature2}`);
+	let signature = Buffer.from(
+		crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body).digest("hex")
+	);
+	console.log(`${githubSignature}\n${signature}`);
 
-	let areEqual1 = crypto.timingSafeEqual(signature1, githubSignature);
-	let areEqual2 = crypto.timingSafeEqual(signature2, githubSignature);
-	console.log(areEqual1, areEqual2);
+	let areEqual = githubSignature.length == signature.length && crypto.timingSafeEqual(signature, githubSignature);
+	console.log(areEqual);
 
 	res.sendStatus(200);
 
