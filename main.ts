@@ -10,12 +10,9 @@ const server = express();
 server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	console.log(process.env.WEBHOOK_SECRET);
 
-	console.log(req.headers, Object.keys(req.headers));
-	res.sendStatus(200);
-	return;
-	let ghSignatureHeader = req.headers["X-Hub-Signature-256"] as string;
+	let ghSignatureHeader = req.headers["x-hub-signature-256"] as string;
 	let githubSignatureStr = (ghSignatureHeader.match(/^sha256=(.+)$/) || [])[1];
-	if (!githubSignatureStr) throw Error(`Incorrectly formatted X-Hub-Signature-256 header: ${ghSignatureHeader}`);
+	if (!githubSignatureStr) throw Error(`Incorrectly formatted x-hub-signature-256 header: ${ghSignatureHeader}`);
 	
 	let githubSignature = Buffer.from(githubSignatureStr);
 	let signature1 = crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body).digest();
