@@ -8,8 +8,6 @@ import * as crypto from "crypto";
 const server = express();
 
 server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
-	console.log(process.env.WEBHOOK_SECRET);
-
 	let ghSignatureHeader = req.headers["x-hub-signature-256"] as string;
 	let githubSignatureStr = (ghSignatureHeader.match(/^sha256=(.+)$/) || [])[1];
 	if (!githubSignatureStr) throw Error(`Incorrectly formatted x-hub-signature-256 header: ${ghSignatureHeader}`);
@@ -18,20 +16,14 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	let signature = Buffer.from(
 		crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body).digest("hex")
 	);
-	console.log(`${githubSignature}\n${signature}`);
-
 	let areEqual = githubSignature.length == signature.length && crypto.timingSafeEqual(signature, githubSignature);
-	console.log(areEqual);
+	if (!areEqual) return;
 
 	res.sendStatus(200);
-
-	//if (req.headers["x-github-hook-id"] != "489728820") return;
-	//res.status(200).end();
-
-	//cp.exec("git pull", (error, stdout, stderr) => {
-	//	console.log(stdout);
-	//	process.exit();
-	//});
+	cp.exec("git pull", (error, stdout, stderr) => {
+		console.log(stdout);
+		process.exit();
+	});
 });
 
 server.use(express.static("files", {
