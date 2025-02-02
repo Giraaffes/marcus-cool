@@ -32,6 +32,7 @@ server.get("/stardew_search", async (req, res) => {
 	let suggestions = (await axios.get(
 		`https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&format=json&formatversion=2&search=${req.query.q}`
 	)).data;
+	suggestions[1] = suggestions[1].map(e => "Result!");
 	suggestions[2] = suggestions[2].map(e => "Hi!");
 	res.send(suggestions);
 });
