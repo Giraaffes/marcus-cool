@@ -1,6 +1,8 @@
 import "express-async-errors";
 import * as express from "express";
 
+import axios from "axios";
+
 import * as cp from "child_process";
 import * as crypto from "crypto";
 
@@ -24,6 +26,14 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 		console.log(stdout);
 		process.exit();
 	});
+});
+
+server.get("/stardew_search", async (req, res) => {
+	let suggestions = (await axios.get(
+		`https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&format=json&formatversion=2&search=${req.query.q}`
+	)).data;
+	suggestions[2] = suggestions[2].map(e => "Hi!");
+	res.send(suggestions);
 });
 
 server.use(express.static("files", {

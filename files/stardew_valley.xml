@@ -1,8 +1,9 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
   <ShortName>Stardew Valley Wiki</ShortName>
   <Description>:)</Description>
-  <!--<InputEncoding>UTF-8</InputEncoding>-->
+  <InputEncoding>UTF-8</InputEncoding>
   <Image width="32" height="32">https://stardewvalleywiki.com/mediawiki/extensions/StardewValley/images/favicon.png</Image>
   <Url type="text/html" template="https://stardewvalleywiki.com/mediawiki/index.php?search={searchTerms}"/>
-  <Url type="application/x-suggestions+json" template="https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&amp;format=json&amp;formatversion=2&amp;search={searchTerms}"/>
+  <!--<Url type="application/x-suggestions+json" template="https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&amp;format=json&amp;formatversion=2&amp;search={searchTerms}"/>-->
+  <Url type="application/x-suggestions+json" template="https://www.htgnyt.dk/test/stardew_search?q={searchTerms}"/>
 </OpenSearchDescription>
