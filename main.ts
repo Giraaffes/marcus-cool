@@ -28,10 +28,28 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	});
 });
 
+type OpenSearchSuggestions = [string, string[], string[], string[]]
 server.get("/stardew_search", async (req, res) => {
+	let query = req.query.q as string;
 	let suggestions = (await axios.get(
-		`https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&format=json&formatversion=2&search=${req.query.q}`
-	)).data;
+		`https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&format=json&formatversion=2&search=${query}`
+	)).data as OpenSearchSuggestions;
+
+	let selfIndex = suggestions[1].findIndex(s => s.toLowerCase() == query.toLowerCase())
+	if (selfIndex != -1) {
+		suggestions[1][selfIndex] = suggestions[1][selfIndex] + " (page)";
+	}
+
+	// wait that's a stupid way of doing it
+	//let searchRes = (await axios.get(
+	//	`https://stardewvalleywiki.com/mediawiki/index.php?search=${query}`,
+	//	{maxRedirects: 0, validateStatus: () => true}
+	//));
+	//if (searchRes.status == 302) {
+	//	let	pageUrl = searchRes.headers["location"];
+	//	suggestions[0].unshift()
+	//}
+
 	res.send(suggestions);
 });
 
@@ -41,7 +59,7 @@ server.use(express.static("files", {
 	fallthrough: false
 }));
 
-server.use(((err, req, res) => {
+server.use(((err, req, res, next) => {
 	if (err.status == 404) {
 		res.status(404).send("<title>404</title>404: Denne side findes ikke").end();
 	} else {
