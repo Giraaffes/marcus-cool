@@ -62,10 +62,11 @@ function topApproxMatches(values: string[], query: string, maxErrors: number): s
 	return matchEntries.map(e => e.value);
 }
 
-type matchLevel = "perfect" | "beginning" | "approx" | "none";
+//type matchLevel = "perfect" | "beginning" | "approx" | "none";
+type matchLevel = "beginning" | "approx" | "none";
 function topMatches(values: string[], query: string, maxErrors: number): {level: matchLevel, matches: string[]} {
-	let perfectMatch = values.find(v => v.toLowerCase() == query.toLowerCase());
-	if (perfectMatch) return {level: "perfect", matches: [perfectMatch]};
+	//let perfectMatch = values.find(v => v.toLowerCase() == query.toLowerCase());
+	//if (perfectMatch) return {level: "perfect", matches: [perfectMatch]};
 
 	let wordStartMatches = topWordStartMatches(values, query);
 	if (wordStartMatches.length > 0) return {level: "beginning", matches: wordStartMatches};
@@ -90,12 +91,10 @@ server.get("/stardew/suggestions", async (req, res) => {
 	let fishNames = fishData.map(e => e.name);
 	let matchResult = topMatches(fishNames, query, 3);
 
-	let suggestions;
-	if (matchResult.level == "perfect") {
-		let fish = fishData.find(e => e.name == matchResult.matches[0]);
-		suggestions = [formatFish(fish)];
-	} else {
-		suggestions = matchResult.matches.slice(0, 10);
+	let suggestions = matchResult.matches.slice(0, 10);
+	if (suggestions[0].toLowerCase() == query.toLowerCase()) {
+		let fish = fishData.find(e => e.name == suggestions[0]);
+		suggestions[0] = formatFish(fish);
 	}
 
 	res.send([query, suggestions, [], []]);
