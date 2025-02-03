@@ -32,10 +32,16 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 });
 
 
-function topBeginningMatches(values: string[], query: string): string[] {
-	return values.filter(
-		v => v.toLowerCase().startsWith(query.toLowerCase())
-	).sort();
+function topWordStartMatches(values: string[], query: string): string[] {
+	let matchEntries = values.map(value => 
+		({value, wordIndex: value.split(/\s+/).findIndex(w => 
+			w.toLowerCase().startsWith(query.toLowerCase())
+		)})
+	).filter(m => m.wordIndex != -1).sort((a, b) => 
+		// https://stackoverflow.com/a/50580263/26806091
+		a.wordIndex - b.wordIndex || a.value.length - b.value.length || a.value.localeCompare(b.value)
+	);
+	return matchEntries.map(e => e.value);
 }
 
 function stringDifference(str1: string, str2: string): number {
@@ -49,7 +55,10 @@ function stringDifference(str1: string, str2: string): number {
 function topApproxMatches(values: string[], query: string, maxErrors: number): string[] {
 	let matchEntries = values.map(value => 
 		({value, errors: stringDifference(value, query)})
-	).filter(m => m.errors <= maxErrors).sort((a, b) => a.errors - b.errors)
+	).filter(m => m.errors <= maxErrors).sort((a, b) => 
+		// https://stackoverflow.com/a/50580263/26806091
+		a.errors - b.errors || a.value.length - b.value.length || a.value.localeCompare(b.value)
+	);
 	return matchEntries.map(e => e.value);
 }
 
@@ -58,8 +67,8 @@ function topMatches(values: string[], query: string, maxErrors: number): {level:
 	let perfectMatch = values.find(v => v.toLowerCase() == query.toLowerCase());
 	if (perfectMatch) return {level: "perfect", matches: [perfectMatch]};
 
-	let beginningMatches = topBeginningMatches(values, query);
-	if (beginningMatches.length > 0) return {level: "beginning", matches: beginningMatches};
+	let wordStartMatches = topWordStartMatches(values, query);
+	if (wordStartMatches.length > 0) return {level: "beginning", matches: wordStartMatches};
 
 	let approxMatches = topApproxMatches(values, query, maxErrors);
 	if (approxMatches) return {level: "approx", matches: approxMatches};
