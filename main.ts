@@ -107,7 +107,7 @@ server.get("/stardew/search", async (req, res) => {
 	let fishNames = fishData.map(e => e.name);
 	let matchResult = topMatches(fishNames, query, 3);
 
-	if (matchResult.level != "none") {
+	if (matchResult.level != "none") { // todo make it so approx match results should only be chosen if error <= 1 or something
 		let fish = fishData.find(e => e.name == matchResult.matches[0]);
 		res.redirect(fish.url);
 	} else {
