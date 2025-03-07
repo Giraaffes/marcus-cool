@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Karakter Beregner</title>
+		
+		<link href="https://fonts.cdnfonts.com/css/ibm-plex-sans" rel="stylesheet">
+		<script
+					  src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
+					  integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo="
+					  crossorigin="anonymous"></script>
+
+		<style>
+			:root {
+				--gray1: #f8f8f8;
+				--gray2: #e8e8e8;
+				--gray3: #dbdbdb;
+				--gray4: #d4d4d4;
+				--border1: #222222;
+				--border2: #666666;
+				--border3: #999999;
+				--color: #317088;
+				--color-hover: #004e6c;
+				--invalid: #cc0000;
+			}
+
+			* {
+				font-family: 'IBM Plex Sans', sans-serif;
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				flex-shrink: 0;
+			}
+
+			input {
+				outline: 0;
+			}
+
+			.template {
+				display: none !important;
+			}
+
+			.hidden {
+				visibility: hidden;
+			}
+
+			.small-btn {
+				position: relative;
+				width: 2.2rem;
+				height: 2.2rem;
+
+				border: none;
+				border-radius: 50%;
+				background: none;
+			}
+
+			.small-btn:hover {
+				cursor: pointer;
+				background: var(--gray2);
+			}
+
+			.small-btn:active {
+				background: var(--gray3);
+			}
+
+			.small-btn > span {
+				position: absolute;
+				line-height: 1;
+				bottom: calc(50% - 0.40625em);
+				user-select: none;
+
+				font-weight: 500;
+				color: var(--border2);
+			}
+
+			.small-btn:active > span {
+				color: var(--border1);
+			}
+
+			#add-fag-btn > span {
+				font-size: 2rem;
+				left: calc(50% - 0.3em);
+			}
+
+			.fag .remove-btn > span {
+				font-size: 1.6rem;
+				left: calc(50% - 0.265em);
+			}
+
+
+			body {
+				height: 100vh;
+				display: flex;
+				flex-direction: column;
+			}
+
+			body > * {
+				max-width: 100%;
+			}
+
+
+			#top-bar {
+				position: relative;
+				height: 3.5rem;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+				z-index: 2;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			#skabelon {
+				position: absolute;
+				left: 0rem;
+				padding-left: 1rem;
+				width: calc(50% - 17.5rem);
+				font-size: 1.2rem;
+				z-index: 1;
+
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			#skabelon span {
+				position: relative;
+				bottom: 0.10rem;
+			}
+
+			#skabelon select {
+				background: #fff;
+				border: var(--border3) solid 1px;
+				border-radius: 0.76rem;
+
+				width: 17rem;
+				max-width: calc(100% - 5.11rem);
+				height: 2rem;
+				font-size: 1.1rem;
+				padding: 0 0.5rem;
+			}
+
+			#skabelon select:hover {
+				background: var(--gray2);
+				cursor: pointer;
+			}
+
+			#skabelon option {
+				background: #fff;
+			}
+
+			#headers {
+				width: 35rem;
+				height: 90%;
+				padding: 0 1.75rem;
+				background: #fff;
+				z-index: 2;
+				box-shadow: -10px 0 8px -4px #fff;
+
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				font-size: 1.25rem;
+				font-weight: 700;
+			}
+
+			#headers span {
+				position: relative;
+				bottom: 0.05rem;
+			}
+
+			#headers > * {
+				width: 8rem;
+			}
+
+			#headers .navn {
+				text-align: left;
+			}
+
+			#headers .niveau {
+				text-align: center;
+			}
+
+			#headers .karakter {
+				text-align: right;
+			}
+
+			#headers .karakter > span {
+				display: inline-block;
+				width: 4rem;
+			}
+
+			#gennemsnit {
+				height: 4rem;
+				background: var(--gray4);
+				font-size: 1.3rem;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			#gennemsnit .value {
+				width: 3.67rem;
+				font-weight: 600;
+			}
+
+
+			#custom-fag, #special-fag {
+				padding-left: 0;
+				padding-right: 0;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			#custom-fag {
+				padding-top: 1.25rem;
+				padding-bottom: 0.75rem;
+				flex-grow: 1;
+				flex-shrink: 1;
+				overflow-x: hidden;
+				overflow-y: scroll;
+				z-index: 1;
+			}
+
+			#special-fag {
+				box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.25);
+				padding-top: 1rem;
+				padding-bottom: 1rem;
+				z-index: 2;
+			}
+
+
+			.fag {
+				background: var(--gray1);
+				border: var(--border2) solid 1px;
+				border-radius: 1.2rem;
+
+				position: relative;
+				width: 35rem;
+				height: 3.5rem;
+				padding-left: 1.25rem;
+				padding-right: 1.75rem;
+
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.fag .navn {
+				width: 10rem;
+				border: none;
+				border-radius: 0.5rem;
+				background: none;
+				padding: 0.1rem 0.5rem;
+
+				font-size: 1.25rem;
+				font-weight: 500;
+        text-overflow: ellipsis;
+			}
+
+			.fag .navn.long {
+				width: 20rem;
+			}
+
+			.fag input.navn:hover {
+				background: var(--gray2);
+			}
+
+			.fag input.navn:focus {
+				background: var(--gray3);
+				font-weight: normal;
+			}
+
+			.fag .niveau {
+				display: flex;
+				align-items: center;
+				gap: 0.3rem;
+			}
+
+			.fag .niveau > button {
+				border: var(--border3) solid 1px;
+				border-radius: 0.5rem;
+				width: 2.1rem;
+				height: 2.1rem;
+				background: #fff;
+
+				font-size: 1.3rem;
+				line-height: 0;
+				color: #000;
+			}
+
+			.fag .niveau > button:hover {
+				background: var(--gray2);
+				cursor: pointer;
+			}
+
+			.fag .niveau > button.selected {
+				border: var(--border1) solid 2px;
+				color: #fff;
+				background: var(--color);
+			}
+
+			.fag .niveau > button.selected:hover {
+				background: var(--color-hover);
+				cursor: pointer;
+			}
+
+			.fag .karakter {
+				width: 9.75rem;
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				gap: 2rem;
+			}
+
+			.fag .karakter > input {
+				border: none;
+				background: none;
+				border-bottom: var(--border1) solid 2px;
+				width: 2rem;
+				height: 2rem;
+				font-size: 1.5rem;
+				text-align: center;
+			}
+
+			.fag .karakter > input.invalid {
+				border-bottom: var(--invalid) solid 3px;
+			}
+
+			.fag .karakter > input:hover {
+				background: var(--gray2);
+			}
+
+			.fag .karakter > input:focus {
+				background: var(--gray3);
+			}
+
+			.fag > * {
+				z-index: 2;
+			}
+
+			.fag .hover {
+				position: absolute;
+				height: 100%;
+				left: 50%;
+				margin-left: -50vw;
+				width: 100vw;
+
+				z-index: 1;
+			}
+
+			.fag .remove-btn {
+				position: absolute;
+				left: calc(50% + 17.5rem + 0.6rem);
+				top: calc(50% - 2.32rem / 2);
+
+				display: none;
+			}
+
+			.fag:hover .remove-btn {
+				display: initial;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="fag template">
+			<input class="navn" value=""/>
+			<div class="niveau">
+				<button>A</button>
+				<button>B</button>
+				<button>C</button>
+				<button class="selected">-</button>
+			</div>
+			<div class="karakter">
+				<input maxlength="2" />
+				<input maxlength="2" />
+			</div>
+			<div class="hover"></div>
+			<button class="remove-btn small-btn"><span>x</span></button>
+		</div>
+
+		<div id="top-bar">
+			<div id="skabelon">
+				<span>Preset: </span>
+				<select>
+					<option value="none">Ingen</option>
+					<option value="science">HTG ASF/SAFE - Science 1.g</option>
+					<option value="samf">HTG ASF/SAFE - Samf. 1.g</option>
+				</select>
+			</div>
+			<div id="headers">
+				<span class="navn">Fag</span>
+				<span class="niveau">Niveau</span>
+				<div class="karakter">
+					<span>Skr</span><span>Mund</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="custom-fag" class="fix-scrollbar">
+			<button id="add-fag-btn" class="small-btn"><span>+</span></button>
+		</div>
+
+		<div id="special-fag">
+			<div class="fag">
+				<span class="navn long">NV eksamen <span style="font-weight: normal;">(0,25)</span></span>
+				<div class="karakter">
+					<input maxlength="2" />
+					<input maxlength="2" class="hidden"/>
+				</div>
+			</div>
+			<div class="fag">
+				<span class="navn long">AP eksamen <span style="font-weight: normal;">(0,25)</span></span>
+				<div class="karakter">
+					<input maxlength="2" class="hidden"/>
+					<input maxlength="2" />
+				</div>
+			</div>
+			<div class="fag">
+				<span class="navn long">SRP <span style="font-weight: normal;">(2,00)</span></span>
+				<div class="karakter">
+					<input maxlength="2" />
+					<input maxlength="2" />
+				</div>
+			</div>
+		</div>
+
+		<div id="gennemsnit">
+			<span>Vægtet gennemsnit:</span>
+			<span class="value">-</span>
+		</div>
+
+		<script>
+			$(".fix-scrollbar").each((_, e) => {
+				let scrollbarWidth = e.offsetWidth - e.clientWidth;
+				$(e).css("padding-left", scrollbarWidth);
+			});
+		</script>
+
+		<script>
+			const niveauWeights = [2, 1.5, 1, 0];
+			const specialWeights = [0.25, 0.25, 2];
+
+			function updateGennemsnit() {
+				let anySupplied = false;
+				let sum = 0;
+				let weightSum = 0;
+
+				$(".fag:not(.skabelon)").each((_, fag) => {
+					let weight;
+					if (fag.closest("#custom-fag")) {
+						let niveau = $(fag).find(".niveau > button").toArray()
+								.findIndex(btn => $(btn).hasClass("selected"));
+						if (niveau == 3) return;
+						weight = niveauWeights[niveau];
+					} else {
+						weight = specialWeights[$(fag).index()];
+					}
+
+					let inputs = $(fag).find(".karakter > input:not(.invalid):not(.hidden)").toArray()
+						.filter(inp => $(inp).val() != "");
+					if (inputs.length == 0) return;
+
+					if (!anySupplied) anySupplied = true;
+					weightSum += weight;
+
+					let fagSum = inputs.reduce((a, k) => a + parseInt($(k).val()), 0);
+					let weightedFagAvg = fagSum / inputs.length * weight;
+					sum += weightedFagAvg;
+				});
+
+				let avg = sum / weightSum;
+				let avgString = (Math.round(avg * 100) / 100).toFixed(2);
+				avgString = avgString.replace(".", ",");
+
+				$("#gennemsnit .value").text(anySupplied ? avgString : "-");
+			}
+		</script>
+
+		<script>
+			const validGrades = ["-3", "0", "00", "2", "02", "4", "7", "10", "12"];
+
+			function navnKeyPressed(e) {
+				if (e.which == 13) {
+					$(this).blur();
+					navnFinished.call(this);
+				}
+			}
+
+			function navnFinished() {
+				$(this).val($(this).val().trim());
+			}
+
+			function karakterKeyPressed(e) {
+				if (e.which == 13) {
+					$(this).blur();
+
+					let inputs = $(".fag .karakter > input:not(.hidden)").toArray();
+					let nextInput = inputs[inputs.indexOf(this) + 1];
+					if (nextInput) nextInput.focus();
+				}
+			}
+
+			function karakterChanged() {
+				let input = $(this);
+				let inputVal = input.val();
+
+				if (inputVal.match(/^\-?\d*$/)) {
+					input.attr("data-last-val", inputVal);
+				} else {
+					input.val(input.attr("data-last-val"));
+					return;
+				}
+
+				if (inputVal && !validGrades.includes(input.val())) {
+					input.addClass("invalid");
+				} else {
+					input.removeClass("invalid");
+				}
+			}
+
+			function niveauClicked() {
+				let btn = $(this);
+				btn.parent().find("> button").removeClass("selected");
+				btn.addClass("selected");
+			}
+
+			function removeClicked() {
+				$(this).closest(".fag").remove();
+			}
+
+			function initFag() {
+				$(this).find(".navn")
+					.keypress(navnKeyPressed)
+					.focusout(navnFinished);
+
+				$(this).find(".karakter > input")
+					.keypress(karakterKeyPressed)
+					.keyup(karakterChanged)
+					.keyup(updateGennemsnit)
+					.each(karakterChanged);
+
+				$(this).find(".niveau > button")
+					.click(niveauClicked)
+					.click(updateGennemsnit);
+
+				$(this).find(".remove-btn")
+					.click(removeClicked)
+					.click(updateGennemsnit);
+			}
+
+			$(".fag").each(initFag);
+		</script>
+
+		<script>
+			const skabeloner = {
+				none: [],
+				science: [
+					["Dansk", 0], ["Engelsk", 1], ["Matematik", 0],
+					["Fysik", 1], ["Kemi", 1], ["Historie", 0],
+					["Samfundsfag", 2], ["Tysk fortsætter", 1], ["Fransk fortsætter", 1],
+					["Musik", 2], ["Billedkunst", 2]
+				],
+				bioscience: [],
+				samf: [
+					["Dansk", 0], ["Engelsk", 0], ["Matematik", 1],
+					["Fysik", 2], ["Biologi", 2], ["Historie", 0],
+					["Samfundsfag", 1], ["Tysk fortsætter", 0],
+					["Musik", 2], ["Billedkunst", 2]
+				],
+			};
+
+			function addFag(e, navn, niveau) {
+				navn = (navn == undefined) ? "Nyt fag" : navn;
+				niveau = (niveau == undefined) ? 3 : niveau;
+
+				let fag = $(".template").first().clone();
+				fag.find(".navn").val(navn);
+				niveauClicked.call(fag.find(".niveau > button")[niveau]);
+				fag.removeClass("template").insertBefore("#add-fag-btn");
+
+				initFag.call(fag[0]);
+				$("#custom-fag").scrollTop($("#custom-fag")[0].scrollHeight);
+			}
+
+			function skabelonChanged() {
+				$("#custom-fag .fag").remove();
+				let skabelonFag = skabeloner[$("#skabelon select").val()];
+				for (let fag of skabelonFag) {
+					addFag(null, fag[0], fag[1]);
+				}
+				$("#custom-fag").scrollTop(0);
+
+				updateGennemsnit();
+			}
+
+			$("#add-fag-btn").click(addFag)
+
+			$("#skabelon select").change(skabelonChanged).val("none");
+			$("#skabelon option").click(skabelonChanged);
+		</script>
+	</body>
+</html>

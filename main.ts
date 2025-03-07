@@ -1,23 +1,19 @@
 import "express-async-errors";
 import express from "express";
-import axios from "axios";
+
+const server = express();
+
+// Webhook push
 
 import cp from "child_process";
 import crypto from "crypto";
 
-import approxSearch from "approx-string-match";
-
-import fishData from "./data/stardew_fish.json";
-
-
-const server = express();
-
 server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	let ghSignatureHeader = req.headers["x-hub-signature-256"] as string;
-	let githubSignatureStr = (ghSignatureHeader.match(/^sha256=(.+)$/) || [])[1];
-	if (!githubSignatureStr) throw Error(`Incorrectly formatted x-hub-signature-256 header: ${ghSignatureHeader}`);
+	let ghSignatureStr = (ghSignatureHeader.match(/^sha256=(.+)$/) || [])[1];
+	if (!ghSignatureStr) throw Error(`Incorrectly formatted x-hub-signature-256 header: ${ghSignatureHeader}`);
 	
-	let githubSignature = Buffer.from(githubSignatureStr);
+	let githubSignature = Buffer.from(ghSignatureStr);
 	let signature = Buffer.from(
 		crypto.createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body).digest("hex")
 	);
@@ -31,6 +27,11 @@ server.post("/github-push", express.raw({type: "*/*"}), (req, res) => {
 	});
 });
 
+// SDV wiki search engine
+
+import approxSearch from "approx-string-match";
+
+import fishData from "./json/stardew_fish.json";
 
 function topWordStartMatches(values: string[], query: string): string[] {
 	let matchEntries = values.map(value => 
@@ -82,8 +83,8 @@ function formatFish(fish: Fish) {
 	let locationStr = fish.locations.join(" & ");
 	let timeStr = fish.times.length > 0 ? fish.times.join(" & ") : "anytime";
 	let seasonStr = fish.seasons.length > 0 ? `in ${fish.seasons.join(" & ")}` : "in any season";
-	let weather = fish.weather.length > 0 ? `only ${fish.weather.join(" or ")}` : "";
-	return `${fish.name} (${locationStr}, ${timeStr} ${seasonStr}${weather ? (", " + weather) : ""})`;
+	let weatherStr = fish.weather.length > 0 ? `only ${fish.weather.join(" or ")}` : "";
+	return `${fish.name} (${locationStr}, ${timeStr} ${seasonStr}${weatherStr ? (", " + weatherStr) : ""})`;
 }
 
 server.get("/stardew/suggestions", async (req, res) => {
@@ -115,6 +116,7 @@ server.get("/stardew/search", async (req, res) => {
 	}
 });
 
+// Server routing
 
 server.use(express.static("static", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),

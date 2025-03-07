@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Corkboard Select</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+		
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+		<style>
+			html, body {
+				width: 100%;
+				margin: 0;
+			}
+
+			body {
+				font-family: 'Varela Round', sans-serif;
+				text-align: center;
+
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			h1 {
+				width: 100%;
+
+				font-size: 4rem;
+				font-weight: 400;
+				color: white;
+				-webkit-text-stroke: 3px black;
+
+				margin-bottom: 5rem;
+			}
+
+			#background-img {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+
+				background-image: url("img/corkboard.png");
+				background-size: 25rem;
+				filter: brightness(0.9);
+
+				z-index: -2;
+				pointer-events: none;
+			}
+
+			#bar {
+				position: absolute;
+				height: 100%;
+				width: 75%;
+				left: 12.5%;
+				
+				background-color: #FFFFFF;
+				box-shadow: 0 0 20px #00000090;
+
+				z-index: -1;
+				pointer-events: none;
+			}
+
+			#boards {
+				width: 50%;
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: space-between;
+				gap: 4rem;
+
+				margin-bottom: 5rem;
+			}
+
+			#board-template {
+				display: none;
+			}
+
+			.board {
+				position: relative;
+
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 1rem;
+				transition: transform 0.15s ease-out;
+			}
+
+			.board:hover {
+				cursor: pointer;
+				transform: scale(1.1);
+			}
+
+			.board .bgr {
+				width: 12.5rem;
+				height: 10rem;
+
+				background-image: url("img/corkboard.png");
+				background-size: 200%;
+				box-shadow: 0 0 8px #00000080;
+			}
+
+			.board .bgr canvas {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.board .title {
+				width: 100%;
+				font-size: 2rem;
+				text-decoration: underline;
+			}
+
+			.board .delete {
+				position: absolute;
+				left: 0.5rem;
+				top: 0.5rem;
+				width: 2.25rem;
+				height: 2.25rem;
+				padding: 0.25rem;
+
+				background-color: #00000060;
+				border: none;
+
+				font-family: monospace;
+				font-size: 1.4rem;
+				color: #FFFFFF;
+				text-align: center;
+				border-radius: 2rem;
+
+				display: none;
+				transition: transform 0.15s ease-out;
+			}
+
+			.board:hover .delete {
+				display: initial;
+			}
+
+			.board:hover .delete:hover {
+				cursor: pointer;
+				transform: scale(1.2);
+			}
+
+			#new-board {
+				width: 100%;
+			}
+
+			#new-board button {
+				width: 3rem;
+				height: 3rem;
+
+				background: none;
+				border: none;
+
+				font-family: monospace;
+				font-size: 2.5rem;
+				font-weight: 600;
+
+				transition: transform 0.15s ease-out;
+			}
+
+			#new-board button:hover {
+				cursor: pointer;
+				transform: scale(1.2);
+			}
+		</style>
+	</head>
+	<body>
+		<h1>My Corkboards</h1>
+		<div id="boards">
+			<div class="board" id="board-template">
+				<div class="bgr">
+					<canvas width="500" height="400"></canvas>
+				</div>
+				<span class="title"></span>
+				<button class="delete">X</button>
+			</div>
+		</div>
+		<div id="new-board"><button>+</button></div>
+
+		<div id="background-img"></div>
+		<div id="bar"></div>
+
+		<script>
+			const pinColors = [
+				"#d40f00",
+				"#d45e00",
+				"#d4ac00",
+				"#45d400",
+				"#00d488",
+				"#0090d4",
+				"#8300d4",
+				"#d4009f"
+			];
+
+			function map(x, a1, b1, a2, b2) {
+				return (x - a1) / (b1 - a1) * (b2 - a2) + a2;
+			}
+
+			$("#new-board button").on("click", () => {
+				window.location.href = "./edit";
+			});
+		</script>
+
+		<script src="script/previews.js"></script>
+	</body>
+</html>

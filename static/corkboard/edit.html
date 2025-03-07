@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+		<style>
+			* {
+				user-select: none;
+				outline: none;
+			}
+
+			body { 
+				margin: 0;
+				overflow: hidden;
+
+				background-image: url("img/corkboard.png");
+				background-size: 25rem;
+			}
+
+			.dragged {
+				cursor: move !important;
+			}
+
+			#board {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 0;
+				width: 500rem;
+				height: 400rem;
+				transform-origin: 0 0;
+			}
+		
+			#top-board {
+				position: absolute;
+				z-index: 3;
+				width: 0;
+				height: 0;
+			}
+
+			.draggable {
+				position: absolute;
+				z-index: 1;
+				box-shadow: 0 0 4px #0F0F0940;
+			}
+
+			.draggable.dragged {
+				box-shadow: 0 0 4px #0F0F0940, -5px 3px 5px #0F0F0940;
+			}
+
+			.pinning .draggable.pinned {
+				cursor: default
+			}
+
+			.pinning .draggable.to-pin {
+				cursor: pointer;
+			}
+
+			.deleting .draggable {
+				cursor: pointer;
+			}
+
+			.deleting .draggable:hover::after {
+				position: absolute;
+				content: "";
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				background-color: #FF444460;
+			}
+
+			.sticky {
+				width: 10rem;
+				padding: 0 0.5rem;
+
+				background-color: #FFFF90;
+				outline: none;
+
+				font-family: "Varela Round", sans-serif;
+				font-size: 1.35rem;
+				text-align: center;
+				line-height: 1.55rem;
+			}
+
+			.image {
+				padding: 0.5rem;
+				background-color: #FFFFFF;
+			}
+
+			.image img {
+				width: auto;
+				height: 8rem;
+				pointer-events: none;
+				background-color: #111111;
+			}
+
+			.image button {
+				position: absolute;
+				width: 0;
+				height: 0;
+				padding: 0;
+				top: 0.5rem;
+				left: 0.5rem;
+				background: none;
+				border-style: solid;
+				border-width: 0 0 2rem 2rem;
+				border-color: transparent;
+			}
+
+			:is(.pinning, .deleting) > .draggable > *, .stringing > .draggable {
+				pointer-events: none;
+			}
+
+			:not(.pinning):not(.stringing):not(.deleting) > .image:hover button {
+				border-left-color: #66666660;
+			}
+
+			.image button.hover {
+				cursor: pointer;
+				border-left-color: #22222260 !important; 
+			}
+
+			.sticky.dragged {
+				box-shadow: 0 0 4px #0F0F0940, -5px 3px 5px #0F0F0940;
+			}
+
+			.pin {
+				position: absolute;
+				z-index: 3;
+				pointer-events: none;
+			}
+
+			.pin img {
+				position: absolute;
+				width: 3.6rem;
+				transform: translate(-50%, -50%);
+			}
+
+			.pin .hover-area {
+				position: absolute;
+				width: 1.8rem;
+				height: 2rem;
+				transform: translate(-50%, -50%);
+			}
+
+			.pin .delete-img {
+				display: none;
+			}
+
+			:is(.deleting, .stringing) .pin .hover-area {
+				pointer-events: all;
+			}
+
+			:is(.deleting, .stringing) .pin .hover-area:hover {
+				cursor: pointer;
+			}
+
+			.deleting .pin .hover-area:hover ~ .delete-img {
+				display: initial;
+			}
+
+			.stringing .pin .hover-area:hover ~ .main-img,
+			.stringing .pin.dragging-from .main-img {
+				transform: translate(-50%, -50%) scale(1.2);
+			}
+
+			#preview-pin {
+				filter: opacity(0.7);
+			}
+
+			.button-bar {
+				position: fixed;
+				top: 1rem;
+				padding: 0.4rem;
+				z-index: 2;
+
+				background-color: #00000070;
+				border-radius: 1.25rem;
+
+				display: flex;
+				justify-content: flex-start;
+				gap: 0.25rem;
+			}
+
+			.button-bar button {
+				position: relative;
+				width: 3rem;
+				height: 3rem;
+				padding: 0;
+
+				background: none;
+				border: none;
+			}
+
+			.button-bar button:hover {
+				cursor: pointer;
+			}
+
+			.button-bar button img {
+				position: absolute;
+				transform: translate(-50%, -50%);
+				pointer-events: none
+			}
+
+			.button-bar button:hover img {
+				transform: translate(-50%, -50%) scale(1.2);
+			}
+
+			.button-bar button.toggled img {
+				filter: drop-shadow(0 0 6px #FFFFFF);
+			}
+
+			#go-back-bar {
+				left: 1rem;
+			}
+
+			#toolbar {
+				left: 5.8rem;
+			}
+
+			#canvas {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				z-index: 2;
+			}
+
+			#canvas.can-delete {
+				pointer-events: all;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body style="pointer-events: none;">
+		<div id="go-back-bar" class="button-bar">
+			<button id="go-back-btn">
+				<img style="width: 60%" src="img/left-arrow.png">
+			</button>
+		</div>
+		<div id="toolbar" class="button-bar">
+			<button id="save-btn"><img style="width: 85%" src="img/save.png"></button>
+			<button id="sticky-btn"><img style="width: 80%" src="img/sticky_note.png"></button>
+			<button id="img-btn"><img style="width: 90%" src="img/image.png"></button>
+			<button id="pin-btn"><img style="width: 120%" src="img/pin_red.png"></button>
+			<button id="strings-btn"><img style="width: 70%" src="img/strings.png"></button>
+			<button id="trash-btn"><img style="width: 75%" src="img/trash_can.png"></button>
+		</div>
+
+		<div id="board">
+			<canvas id="canvas"></canvas>
+		</div>
+		<div id="top-board">
+			<div id="preview-pin" class="pin">
+				<div class="hover-area" src></div>
+				<img class="main-img" src="img/pin_red.png">
+				<img class="delete-img" src="img/pin_delete.png">
+			</div>
+		</div>
+
+		<input id="file-input" type="file" style="display: none;" />
+
+		<script>
+			const dragThresholdSq = Math.pow(4, 2);
+
+			const zoomFactor = 0.1;
+			const maxZoom = 3;
+
+			const minStickyHeight = "8rem";
+			const stickyVPadding = "0.75rem";
+
+
+			function mod(a, b) {
+				return ((a % b) + b) % b;
+			}
+			function constrain(x, a, b) {
+				return Math.min(Math.max(x, a), b);
+			}
+
+			function triggerWithCoords(what, eventName, coordsEvent, extraParameters) {
+				let event = $.Event(eventName);
+				event.pageX = coordsEvent.pageX;
+				event.pageY = coordsEvent.pageY;
+				event.clientX = coordsEvent.clientX;
+				event.clientY = coordsEvent.clientY;
+				$(what).trigger(event, extraParameters);
+			}
+
+			history.scrollRestoration = "manual";
+
+			$(document).on("contextmenu", (e) => {
+				e.preventDefault();
+			});
+
+			$("#go-back-btn").on("click", () => {
+				window.location.href = "./select";
+			});
+		</script>
+
+		<script src="script/board_controls.js"></script>
+		<script src="script/board_toolbar.js"></script>
+		<script src="script/board_draggables.js"></script>
+		<script src="script/board_canvas.js"></script>
+
+		<script src="script/load_and_save.js"></script>
+	</body>
+</html>

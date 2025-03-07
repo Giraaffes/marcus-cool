@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/8ef543fcad.js" crossorigin="anonymous"></script>
+
+		<style>
+			html, body {
+				box-sizing: content-box;
+			}
+			body {
+				margin: 2rem;
+				font-family: "Montserrat";
+				* {
+					margin-bottom: 1rem;
+				}
+			}
+
+			iframe:not([src]) {
+				display: none;
+			}
+			select {
+				font-size: 1rem;
+			}
+			input {
+				width: 20rem;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Download YouTube video</h1>
+		<p style="display: inline;">Video URL:</p>&nbsp;&nbsp;<input type="text" id="url">&nbsp;&nbsp;<button id="go">Go</button>
+
+		<iframe id="preview" width="533" height="300"></iframe>
+
+		<p id="loading">Loading...</p>
+		<div id="download">
+			<span>Choose video quality: </span><select></select><br>
+			<span>Choose audio quality: </span><select></select><br>
+			<a>Download!</a>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+		<script>
+			function uniqueValues(array, mapFunc) {
+				return [...new Set(array.map(mapFunc).filter(q => q))];
+			}
+
+			const videoUrlRegex = /^https:\/\/(?:www\.)?youtube.com\/watch\?v=(?<id>[\w-]+)$/;
+			async function go() {
+				$("#preview, #loading, #download").hide();
+				$("option").remove();
+				$("#download select").off();
+				$("#download a").removeAttr("href");
+				
+				let videoUrl = $("#url").val().trim();
+				let videoUrlMatch = videoUrl.match(videoUrlRegex);
+				if (!videoUrlMatch) return;
+
+				$("#preview").show().attr("src", `https://www.youtube.com/embed/${videoUrlMatch.id}?controls=0`);
+				$("#loading").show();
+
+				let videoInfo = await fetch(`https://www.htgnyt.dk/ytdl/info?url=${encodeURIComponent(videoUrl)}`);
+				let { formats } = await videoInfo.json();
+
+				$("#loading").hide();
+				$("#download").show();
+
+				let videoQualities = uniqueValues(formats, f => f.qualityLabel);
+				videoQualities.sort((a, b) => parseInt(b.match(/^\d+/)[0]) - parseInt(a.match(/^\d+/)[0]));
+				$("#download select:eq(0)").append(videoQualities.map(q => `<option data-value="${q}">${q}</option>`));
+				
+				let audioQualities = uniqueValues(formats, f => f.audioBitrate);
+				audioQualities.sort((a, b) => b - a);
+				$("#download select:eq(1)").append(audioQualities.map(q => `<option data-value="${q}">${q}Kbps</option>`));
+				
+				$("#download select").on("change", e => {
+					let videoQuality = $("#download select:eq(0) option:selected").data("value");
+					let videoItag = formats.find(f => f.qualityLabel == videoQuality).itag;
+					let audioQuality = $("#download select:eq(1) option:selected").data("value");
+					let audioItag = formats.find(f => f.audioBitrate == audioQuality).itag;
+					$("#download a").attr("href", 
+						`https://www.htgnyt.dk/ytdl/video?url=${videoUrl}&video=${videoItag}&audio=${audioItag}`
+					);
+				}).trigger("change");
+			}
+
+			let pageVideoUrl = (new URL(location)).searchParams.get("url");
+			if (pageVideoUrl) $("#url").val(pageVideoUrl);
+
+			$("#preview, #loading, #download").hide();
+			$("#go").on("click", go);
+		</script>
+	</body>
+</html>

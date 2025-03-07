@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>marcus.cool/lighting</title>
+        <link rel="icon" href="/img/icon/lighting.png">
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script>
+            let brightness = 0.1;
+            function updateBrightness() {
+                let g = Math.floor(brightness * 255);
+                $("body").css("background-color", `rgb(${g}, ${g}, ${g})`);
+            }
+            updateBrightness();
+            
+            $(document).on("keypress", e => {
+                if (e.key == ",") {
+                    brightness -= 0.05;
+                } else if (e.key == ".") {
+                    brightness += 0.05;
+                };
+                brightness = Math.max(Math.min(brightness, 1), 0);
+                updateBrightness();
+            });
+        </script>
+    </body>
+</html>
