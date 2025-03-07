@@ -118,6 +118,11 @@ server.get("/stardew/search", async (req, res) => {
 
 // Server routing
 
+server.use((req, res, next) => {
+	console.log(req.path);
+	next();
+});
+
 server.get("/erdethultimedag", (req, res) => {
 	// this messes up with the way express.static() works
 	res.sendFile(`/static/erdethultimedag/index.html`, { root: import.meta.dirname });
