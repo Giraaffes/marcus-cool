@@ -1,9 +1,95 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
 		<title>Er det hultimedag?</title>
+		<link rel="icon" type="image/png" href="img/icon/erdethultimedag.png">
+
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+		<style>
+			body {
+				background-color: #000000;
+			}
+
+			body > * {
+				text-align: center;
+				margin-bottom: 0;
+			}
+
+			h1 {
+				font-family: constantia,georgia,serif;
+				margin-top: 6rem;
+				font-size: 36pt;
+				color: #fff;
+			}
+
+			h2 {
+				font-family: constantia,georgia,serif;
+				margin-top: 0.5rem;
+				font-size: 18pt;
+				color: #ddd;
+			}
+
+			#answer {
+				font-family: candara,verdana,sans-serif;
+				font-size: 48pt;
+				font-weight: 600;
+				margin-top: 7rem;
+			}
+
+			#answer.ja {
+				color: #66bc46;
+			}
+
+			#answer.nej {
+				color: #f63a2d;
+			}
+
+			/*.konami {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}*/
+		</style>
 	</head>
+
 	<body>
-		<p>Ved det ikke endnu...</p>
+		<h1>Er det hultimedag</h1>
+		<h2>...på Høje-Taastrup Gymnasium?</h2>
+		<p id="answer" class="yes">Ja</p>
+		<!--<div id="yay"></div>-->
+
+		<script>
+			function getDateStr(date) {
+				return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+			}
+
+			const hultimedage = ["19/3/2025", "3/4/2025", "24/4/2025", "28/4/2025", "14/5/2024"];
+
+			let nowDateStr = getDateStr(new Date());
+			let erDetHultimedag = hultimedage.includes(nowDateStr);
+			$("#answer").addClass(erDetHultimedag ? "ja" : "nej")
+			$("#answer").text(erDetHultimedag ? "Ja" : "Nej")
+
+			//function yay() {
+			//	var container = document.getElementById("yay");
+			//	var d = new Date();
+			//	var img = document.createElement("img");
+			//	img.onload = function (e) {
+			//		container.appendChild(e.target);
+			//	}
+			//	if (d.getDay() == 5) {
+			//		img.setAttribute("src", "herd2.png");
+			//		img.setAttribute("width", "60%");
+			//	} else {
+			//		img.setAttribute("src", "saddash.png");
+			//		img.setAttribute("width", "30%");
+			//	}
+			//	img.className = "konami";
+			//}
+
+			//var easter_egg = new Konami(function() {yay();});
+		</script>
 	</body>
 </html>
