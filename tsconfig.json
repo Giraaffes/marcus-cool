@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"module": "Preserve",
+		"target": "ESNext",
 		"strictBindCallApply": true,
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true

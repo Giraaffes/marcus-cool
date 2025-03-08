@@ -118,17 +118,22 @@ server.get("/stardew/search", async (req, res) => {
 
 // Server routing
 
-server.use((req, res, next) => {
-	console.log(req.path);
+import fs from "fs";
+
+function isDir(path: string): boolean {
+	let stat;
+	try { stat = fs.statSync(path); } catch { return false; }
+	return stat.isDirectory();
+}
+
+server.use(async (req, res, next) => {
+	if (!req.path.endsWith("/") && isDir(`./static/${req.path}`)) {
+		req.url = req.path + "/" + req.url.slice(req.path.length);
+	}
 	next();
 });
 
-server.get("/erdethultimedag", (req, res) => {
-	// this messes up with the way express.static() works
-	res.sendFile(`/static/erdethultimedag/index.html`, { root: import.meta.dirname });
-});
-
-server.use(express.static("static", {
+server.use(express.static("./static", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),
 	extensions: ["html"],
 	fallthrough: false
