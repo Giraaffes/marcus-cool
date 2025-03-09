@@ -121,19 +121,17 @@ server.get("/stardew/search", async (req, res) => {
 import fs from "fs";
 
 function isDir(path: string): boolean {
-	let stat;
+	let stat: fs.Stats;
 	try { stat = fs.statSync(path); } catch { return false; }
 	return stat.isDirectory();
 }
 
-server.use(async (req, res, next) => {
-	if (!req.path.endsWith("/") && isDir(`./static/${req.path}`)) {
+server.use((req, res, next) => {
+	if (req.method == "GET" && !req.path.endsWith("/") && isDir(`./static/${req.path}`)) {
 		req.url = req.path + "/" + req.url.slice(req.path.length);
 	}
 	next();
-});
-
-server.use(express.static("./static", {
+}, express.static("./static", {
 	setHeaders: res => res.set("access-control-allow-origin", "*"),
 	extensions: ["html"],
 	fallthrough: false
