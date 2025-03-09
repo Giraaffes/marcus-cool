@@ -48,6 +48,14 @@
 				color: #f63a2d;
 			}
 
+			#weekend {
+				font-family: constantia,georgia,serif;
+				font-size: 16pt;
+				font-weight: 500;
+				margin-top: 7rem;
+				color: #bbb;
+			}
+
 			/*.konami {
 				display: block;
 				margin-left: auto;
@@ -59,20 +67,22 @@
 	<body>
 		<h1>Er det hultimedag</h1>
 		<h2>...på Høje-Taastrup Gymnasium?</h2>
-		<p id="answer" class="yes">Ja</p>
+		<p id="answer"></p>
+		<p id="weekend" style="display: none;">( Selvfølgelig ikke, det er weekend! )</p>
 		<!--<div id="yay"></div>-->
 
 		<script>
-			function getDateStr(date) {
-				return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-			}
-
 			const hultimedage = ["19/3/2025", "3/4/2025", "24/4/2025", "28/4/2025", "14/5/2024"];
-
-			let nowDateStr = getDateStr(new Date());
-			let erDetHultimedag = hultimedage.includes(nowDateStr);
+			
+			let now = new Date();
+			let nowStr = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+			let erDetHultimedag = hultimedage.includes(nowStr);
 			$("#answer").addClass(erDetHultimedag ? "ja" : "nej")
 			$("#answer").text(erDetHultimedag ? "Ja" : "Nej")
+
+			if (!erDetHultimedag && (now.getDay() == 6 || now.getDay() == 0)) {
+				$("#weekend").show();
+			}
 
 			//function yay() {
 			//	var container = document.getElementById("yay");
